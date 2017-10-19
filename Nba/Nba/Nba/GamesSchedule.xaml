@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Nba.GamesSchedule"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:helpers="clr-namespace:Nba.Helpers"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+    <StackLayout Padding="0,20,0,0">
+        <DatePicker x:Name="MatchsDatePicker" DateSelected="MatchsDatePicker_DateSelected" Date="{x:Static sys:DateTime.Today}" Format="d MMM yyy" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <ListView x:Name="MatchesView" IsPullToRefreshEnabled="True" Refreshing="MatchesView_Refreshing" HasUnevenRows="false" RowHeight="75" SeparatorColor="Black" ItemSelected="MatchesView_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <ff:CachedImage Source="{Binding HomeTeam.TeamImageUri, Converter={helpers:StringToImageSourceConverter}}" Grid.Column="0" />
+                            <Label Text="{Binding HomeTeam.Score}" IsVisible="{Binding Spoiler}" FontAttributes="{Binding HomeTeam.Winned, Converter={helpers:BoolToBoldConverter}}" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Label Text="-" Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
+
+                            <Label Text="{Binding VisitorTeam.Score}" IsVisible="{Binding Spoiler}" Grid.Column="3" FontAttributes="{Binding VisitorTeam.Winned, Converter={helpers:BoolToBoldConverter}}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <ff:CachedImage Source="{Binding VisitorTeam.TeamImageUri, Converter={helpers:StringToImageSourceConverter}}" Grid.Column="4" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
