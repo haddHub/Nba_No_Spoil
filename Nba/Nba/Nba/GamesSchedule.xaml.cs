@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Plugin.Connectivity;
 
 namespace Nba
 {
@@ -27,8 +28,24 @@ namespace Nba
 
         private async void UpdateView()
         {
+#if DEBUG
             MatchesView.ItemsSource = await LoadDataFromService(MatchsDatePicker.Date);
+#else
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                DisplayErrorAlert();
+            }
+            else
+            {
+                MatchesView.ItemsSource = await LoadDataFromService(MatchsDatePicker.Date);
+            }
+#endif
             MatchesView.EndRefresh();
+        }
+
+        private void DisplayErrorAlert()
+        {
+            Device.BeginInvokeOnMainThread(()=> DisplayAlert("Network error", "No internet connection", "OK"));
         }
 
         private async Task<IEnumerable<Match>> LoadDataFromService(DateTime date)
@@ -117,6 +134,16 @@ namespace Nba
         private void MatchesView_Refreshing(object sender, EventArgs e)
         {
             UpdateView();
+        }
+
+        private void Previous_Clicked(object sender, EventArgs e)
+        {
+            MatchsDatePicker.Date = MatchsDatePicker.Date.AddDays(-1.0);
+        }
+
+        private void Next_Clicked(object sender, EventArgs e)
+        {
+            MatchsDatePicker.Date = MatchsDatePicker.Date.AddDays(1.0);
         }
     }
 }

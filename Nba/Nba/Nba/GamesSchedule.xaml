@@ -6,7 +6,26 @@
              xmlns:helpers="clr-namespace:Nba.Helpers"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <StackLayout Padding="0,20,0,0">
-        <DatePicker x:Name="MatchsDatePicker" DateSelected="MatchsDatePicker_DateSelected" Date="{x:Static sys:DateTime.Today}" Format="d MMM yyy" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" BackgroundColor="Transparent" BorderColor="Transparent" HorizontalOptions="End" VerticalOptions="Center" Clicked="Previous_Clicked" Rotation="180">
+                <Button.Image>
+                    <OnPlatform x:TypeArguments="FileImageSource"
+                    Android="Arrow_Right.png" />
+                </Button.Image>
+            </Button>
+            <DatePicker Grid.Column="1" x:Name="MatchsDatePicker" DateSelected="MatchsDatePicker_DateSelected" Date="{x:Static sys:DateTime.Today}" Format="dd MMM yyy" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Button Grid.Column="2" BackgroundColor="Transparent" BorderColor="Transparent" HorizontalOptions="Start" VerticalOptions="Center" Clicked="Next_Clicked">
+                <Button.Image>
+                    <OnPlatform x:TypeArguments="FileImageSource"
+                    Android="Arrow_Right.png" />
+                </Button.Image>
+            </Button>
+        </Grid>
         <ListView x:Name="MatchesView" IsPullToRefreshEnabled="True" Refreshing="MatchesView_Refreshing" HasUnevenRows="false" RowHeight="75" SeparatorColor="Black" ItemSelected="MatchesView_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
